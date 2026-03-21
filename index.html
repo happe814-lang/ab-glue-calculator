@@ -2,104 +2,96 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AB膠計算機</title>
     <style>
         :root { 
-            --primary: #2c3e50; --accent: #3498db; --range-bg: #fffbe6; 
-            --range-text: #d48806; --model-bg: #f8f9fa; --machine-bg: #e6f7ff;
-            --machine-text: #0050b3; 
-            --danger-bg: #fff1f0; --danger-border: #ffa39e; --danger-text: #cf1322;
-            --warn-bg: #fffbe6; --warn-border: #ffe58f; --warn-text: #d48806;
-            --ok-bg: #f6ffed; --ok-border: #b7eb8f; --ok-text: #389e0d;
+            --primary: #2c3e50; --accent: #3498db; --range-text: #d48806; 
+            --machine-bg: #e6f7ff; --danger-bg: #fff1f0; --danger-border: #ffa39e; 
+            --warn-bg: #fffbe6; --warn-border: #ffe58f; --ok-bg: #f6ffed; --ok-border: #b7eb8f;
         }
-        html, body { height: 100%; margin: 0; padding: 0; overflow-x: hidden; width: 100%; background: #eef2f5; }
-        body { font-family: -apple-system, "Microsoft JhengHei", sans-serif; display: flex; justify-content: center; align-items: flex-start; }
+        html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; width: 100%; background: #eef2f5; position: fixed; }
+        body { font-family: -apple-system, sans-serif; }
         
         .app-card { 
-            background: white; width: 94%; max-width: 420px; border-radius: 24px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 20px; box-sizing: border-box; 
-            margin: 10px auto; display: flex; flex-direction: column; 
-            padding-bottom: 30px;
+            background: white; width: 92%; max-width: 400px; border-radius: 20px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); padding: 15px; box-sizing: border-box; 
+            margin: 10px auto; display: flex; flex-direction: column;
         }
         
-        .home-menu { display: flex; flex-direction: column; gap: 15px; padding: 10px 0; }
+        .home-menu { display: flex; flex-direction: column; gap: 10px; }
         .nav-btn { 
-            padding: 35px 20px; border: none; border-radius: 16px; font-size: 1.3rem; font-weight: bold; 
-            cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 8px;
+            padding: 25px 15px; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: bold; 
+            cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;
         }
-        .btn-hand-big { background: #fffbe6; color: #d48806; border: 2px solid #ffe58f; }
-        .btn-machine-big { background: #e6f7ff; color: #0050b3; border: 2px solid #91d5ff; }
+        .btn-hand-big { background: #fffbe6; color: #d48806; border: 1.5px solid #ffe58f; }
+        .btn-machine-big { background: #e6f7ff; color: #0050b3; border: 1.5px solid #91d5ff; }
 
-        .header { display: flex; align-items: center; margin-bottom: 15px; position: relative; }
-        .btn-back { position: absolute; left: 0; background: #eee; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; }
-        h2 { flex: 1; text-align: center; color: var(--primary); font-size: 1.1rem; margin: 0; }
+        .header { display: flex; align-items: center; margin-bottom: 10px; position: relative; height: 35px; }
+        .btn-back { position: absolute; left: 0; background: #eee; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; }
+        h2 { flex: 1; text-align: center; color: var(--primary); font-size: 0.95rem; margin: 0; }
 
-        .glue-selector { display: flex; gap: 5px; margin-bottom: 15px; }
+        .glue-selector { display: flex; gap: 5px; margin-bottom: 10px; }
         .glue-opt { 
-            flex: 1; border: 2px solid #eee; padding: 8px 2px; border-radius: 10px; 
+            flex: 1; border: 1.5px solid #eee; padding: 8px 0; border-radius: 8px; 
             background: white; text-align: center; cursor: pointer; font-size: 0.8rem; font-weight: bold; color: #888;
         }
         .glue-opt.active { border-color: var(--accent); background: #f0f7ff; color: var(--accent); }
 
-        .input-group { margin-bottom: 15px; position: relative; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 0.9rem; }
+        .input-group { margin-bottom: 10px; position: relative; }
+        label { display: block; margin-bottom: 3px; font-weight: bold; color: #555; font-size: 0.8rem; }
         input { 
-            width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 12px; 
-            font-size: 1.6rem; font-weight: bold; box-sizing: border-box; text-align: center; outline: none;
+            width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 10px; 
+            font-size: 1.4rem; font-weight: bold; box-sizing: border-box; text-align: center; outline: none;
             background: #fff; cursor: pointer;
         }
-        input.active-focus { border-color: var(--accent); background: #f0f7ff; }
+        input.active-focus { border-color: var(--accent); background: #f0f7ff !important; }
 
         .btn-reset-inline {
-            position: absolute; right: 0; top: 0; background: #fff; 
-            border: 1px solid #ccc; color: #888; padding: 2px 8px; 
-            border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: bold;
+            position: absolute; right: 0; top: 0; background: #f0f0f0; 
+            border: 1px solid #ccc; color: #666; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem;
         }
 
-        .result-box { border-radius: 16px; padding: 12px; text-align: center; margin-bottom: 10px; border: 2px solid transparent; transition: 0.3s; }
+        .result-box { border-radius: 14px; padding: 8px; text-align: center; margin-bottom: 5px; border: 1.5px solid transparent; }
         .res-hand-total { background: #f8f9fa; border-color: #eee; }
-        
         .res-machine { background: var(--machine-bg); border-color: #91d5ff; }
         .res-machine.status-danger { background: var(--danger-bg); border-color: var(--danger-border); }
-        .res-machine.status-danger .res-value, .res-machine.status-danger .res-range-value { color: var(--danger-text) !important; }
         .res-machine.status-warn { background: var(--warn-bg); border-color: var(--warn-border); }
-        .res-machine.status-warn .res-value, .res-machine.status-warn .res-range-value { color: var(--warn-text) !important; }
         .res-machine.status-ok { background: var(--ok-bg); border-color: var(--ok-border); }
-        .res-machine.status-ok .res-value, .res-machine.status-ok .res-range-value { color: var(--ok-text) !important; }
 
-        .res-label { font-size: 0.9rem; color: #666; margin-bottom: 2px; font-weight: bold; }
-        .res-value { font-size: 1.8rem; font-weight: 800; color: var(--primary); transition: 0.3s; }
-        .res-sub-label { font-size: 0.8rem; color: #888; margin-top: 5px; }
-        .res-range-value { font-size: 1.1rem; font-weight: bold; margin-top: 2px; }
+        .res-label { font-size: 0.8rem; color: #666; font-weight: bold; }
+        .res-value { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+        .res-range-value { font-size: 0.9rem; font-weight: bold; margin-top: 1px; }
 
         .model-list-container { 
-            background: var(--model-bg); border-radius: 12px; padding: 12px; border: 1px solid #eee; 
-            font-size: 0.75rem; margin-top: 5px; overflow-y: auto; max-height: 120px; 
+            background: #f8f9fa; border-radius: 10px; padding: 8px; border: 1px solid #eee; 
+            font-size: 0.7rem; overflow-y: auto; max-height: 80px; 
         }
-        .tag-container { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
-        .tag { background: #fff; border: 1px solid #ddd; padding: 2px 6px; border-radius: 5px; color: #444; }
+        .tag-container { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+        .tag { background: #fff; border: 1px solid #ddd; padding: 1px 4px; border-radius: 3px; color: #444; }
         
         .hidden { display: none !important; }
 
-        /* 小型數字鍵盤 - 移除底部按鈕，縮減高度 */
+        /* 鍵盤高度縮減一半的核心設定 */
         #customKb {
             position: fixed; bottom: 0; left: 0; right: 0; 
-            background: #d1d4d9; padding: 10px 8px 25px 8px; /* 底部多留一點白給手勢列 */
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.15);
-            z-index: 1000; transition: transform 0.25s ease-out;
-            transform: translateY(100%);
+            background: #d1d4d9; padding: 5px 5px 15px 5px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+            box-shadow: 0 -3px 15px rgba(0,0,0,0.2);
+            z-index: 9999; transition: transform 0.2s ease-out;
+            transform: translateY(105%);
         }
         #customKb.show { transform: translateY(0); }
         .kb-btn {
-            background: #fff; border: none; padding: 18px; border-radius: 8px;
-            font-size: 1.5rem; font-weight: bold; color: #000;
-            box-shadow: 0 1px 1px rgba(0,0,0,0.3); cursor: pointer;
+            background: #fff; border: none; 
+            padding: 10px 0; /* 縮減按鈕高度 */
+            border-radius: 6px;
+            font-size: 1.3rem; font-weight: bold; color: #000;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.2); cursor: pointer;
             display: flex; justify-content: center; align-items: center;
-            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
-        .kb-btn:active { background: #bdc3c7; }
+        .kb-btn:active { background: #bdc3c7; transform: translateY(1px); }
         .kb-btn.action { background: #acb1b9; }
     </style>
 </head>
@@ -107,58 +99,52 @@
 
 <div class="app-card">
     <div id="homePage" class="home-menu">
-        <h2 style="margin-bottom: 10px;">請選擇作業模式</h2>
-        <button class="nav-btn btn-hand-big" onclick="openHandMode()">🖐️ 手調模式</button>
-        <button class="nav-btn btn-machine-big" onclick="openMachineMode()">⚙️ 打膠機校正</button>
+        <h2 style="margin-bottom: 5px;">選擇作業模式</h2>
+        <button class="nav-btn btn-hand-big" onclick="openHandMode(event)">🖐️ 手調模式</button>
+        <button class="nav-btn btn-machine-big" onclick="openMachineMode(event)">⚙️ 打膠機校正</button>
     </div>
 
     <div id="handPage" class="hidden">
         <div class="header">
-            <button class="btn-back" onclick="goBack()">⬅ 返回</button>
-            <h2>手調秤重計算</h2>
+            <button class="btn-back" onclick="goBack(event)">⬅ 返回</button>
+            <h2>手調計算</h2>
         </div>
-        <div class="glue-selector" id="handTypeSelector">
-            <div class="glue-opt" onclick="setHandType(0)">17+18</div>
-            <div class="glue-opt" onclick="setHandType(1)">31+32</div>
-            <div class="glue-opt" onclick="setHandType(2)">35+36</div>
+        <div class="glue-selector">
+            <div class="glue-opt" onclick="setHandType(0, event)">17+18</div>
+            <div class="glue-opt" onclick="setHandType(1, event)">31+32</div>
+            <div class="glue-opt" onclick="setHandType(2, event)">35+36</div>
         </div>
         <div class="input-group">
             <label id="handLabelA">主劑重量 (g)</label>
-            <button class="btn-reset-inline" onclick="resetHand()">清空數據</button>
-            <input type="text" id="handInputA" placeholder="點擊輸入重量" readonly onclick="showKb(this, event)">
+            <button class="btn-reset-inline" onclick="resetHand()">清空</button>
+            <input type="text" id="handInputA" placeholder="點擊輸入" readonly onclick="showKb(this, event)">
         </div>
         <div class="result-box res-hand-total">
             <div class="res-label">預估混合總重 (A+B)</div>
             <div id="handTotal" class="res-value">--- g</div>
-            <div class="res-sub-label">合格總重範圍 (±1%)</div>
             <div id="handTotalRange" class="res-range-value" style="color: var(--range-text)">--- ~ ---</div>
         </div>
-        <div class="model-list-container">
-            <div style="font-weight:bold; color: #7f8c8d;">💡 適用型號：</div>
-            <div id="handTags" class="tag-container"></div>
-        </div>
+        <div class="model-list-container"><div id="handTags" class="tag-container"></div></div>
     </div>
 
     <div id="machinePage" class="hidden">
         <div class="header">
-            <button class="btn-back" onclick="goBack()">⬅ 返回</button>
-            <h2>打膠機比例校正</h2>
+            <button class="btn-back" onclick="goBack(event)">⬅ 返回</button>
+            <h2>打膠機校正</h2>
         </div>
-        <div style="text-align:center; margin-bottom:12px; font-weight:bold; color:var(--accent); font-size:0.9rem;">GLU 35+36 (標準比值: 0.5)</div>
         <div class="input-group">
-            <label>主劑 (GLU-0035/35-1) (g)</label>
-            <button class="btn-reset-inline" onclick="resetMach()">清空數據</button>
-            <input type="text" id="machInputA" placeholder="點擊輸入重量" readonly onclick="showKb(this, event)">
+            <label>主劑 (GLU-0035) (g)</label>
+            <button class="btn-reset-inline" onclick="resetMach()">清空</button>
+            <input type="text" id="machInputA" placeholder="輸入主劑" readonly onclick="showKb(this, event)">
         </div>
         <div class="input-group">
             <label>硬化劑 (GLU-0036) (g)</label>
-            <input type="text" id="machInputB" placeholder="點擊輸入重量" readonly onclick="showKb(this, event)">
+            <input type="text" id="machInputB" placeholder="輸入硬化劑" readonly onclick="showKb(this, event)">
         </div>
         <div id="machBox" class="result-box res-machine">
             <div class="res-label">實測重量比 (B ÷ A)</div>
-            <div id="machRatio" class="res-value" style="color: var(--machine-text)">---</div>
-            <div class="res-sub-label">0.475~0.525 (±5% 範圍)</div>
-            <div id="machStatus" class="res-range-value" style="color: var(--machine-text)">請輸入數值</div>
+            <div id="machRatio" class="res-value">---</div>
+            <div id="machStatus" class="res-range-value">請輸入數值</div>
         </div>
     </div>
 </div>
@@ -188,10 +174,9 @@
     let hIdx = 1;
     let activeInput = null;
 
-    // 鍵盤邏輯
     function showKb(el, e) {
-        e.stopPropagation(); // 防止點擊輸入框同時觸發 body 的隱藏事件
-        if (activeInput) activeInput.classList.remove('active-focus');
+        if(e) e.stopPropagation();
+        document.querySelectorAll('input').forEach(i => i.classList.remove('active-focus'));
         activeInput = el;
         activeInput.classList.add('active-focus');
         document.getElementById('customKb').classList.add('show');
@@ -203,107 +188,66 @@
         activeInput = null;
     }
 
-    // 處理全局點擊隱藏
     function handleGlobalClick(e) {
-        // 如果點擊的不是鍵盤且不是輸入框，就隱藏
-        if (!e.target.closest('#customKb') && !e.target.closest('input')) {
-            hideKb();
-        }
+        if (!e.target.closest('#customKb') && !e.target.tagName.includes('INPUT')) hideKb();
     }
 
     function kbInput(val) {
         if (!activeInput) return;
         if (val === '.' && activeInput.value.includes('.')) return;
         activeInput.value += val;
-        if (activeInput.id === 'handInputA') calcHand();
-        else calcMach();
+        triggerCalc();
     }
 
     function kbDel() {
         if (!activeInput) return;
         activeInput.value = activeInput.value.slice(0, -1);
+        triggerCalc();
+    }
+
+    function triggerCalc() {
         if (activeInput.id === 'handInputA') calcHand();
         else calcMach();
     }
 
-    function openHandMode() {
-        document.getElementById('homePage').classList.add('hidden');
-        document.getElementById('handPage').classList.remove('hidden');
-        setHandType(1);
-    }
-    function openMachineMode() {
-        document.getElementById('homePage').classList.add('hidden');
-        document.getElementById('machinePage').classList.remove('hidden');
-        resetMach();
-    }
-    function goBack() {
-        hideKb();
-        document.querySelectorAll('.app-card > div').forEach(d => d.classList.add('hidden'));
-        document.getElementById('homePage').classList.remove('hidden');
-    }
+    function openHandMode(e) { e.stopPropagation(); document.getElementById('homePage').classList.add('hidden'); document.getElementById('handPage').classList.remove('hidden'); setHandType(1); }
+    function openMachineMode(e) { e.stopPropagation(); document.getElementById('homePage').classList.add('hidden'); document.getElementById('machinePage').classList.remove('hidden'); resetMach(); }
+    function goBack(e) { if(e) e.stopPropagation(); hideKb(); document.querySelectorAll('.app-card > div').forEach(d => d.classList.add('hidden')); document.getElementById('homePage').classList.remove('hidden'); }
 
-    function setHandType(idx) {
+    function setHandType(idx, e) {
+        if(e) e.stopPropagation();
         hIdx = idx;
-        const opts = document.querySelectorAll('#handTypeSelector .glue-opt');
-        opts.forEach((o, i) => o.classList.toggle('active', i === idx));
-        document.getElementById('handLabelA').innerText = `主劑重量 (${glueList[idx].a}) (g)`;
+        document.querySelectorAll('.glue-opt').forEach((o, i) => o.classList.toggle('active', i === idx));
+        document.getElementById('handLabelA').innerText = `主劑 (${glueList[idx].a}) (g)`;
         document.getElementById('handTags').innerHTML = glueList[idx].tags.map(t => `<span class="tag">${t}</span>`).join('');
         resetHand();
     }
 
     function calcHand() {
         const valA = parseFloat(document.getElementById('handInputA').value);
-        if (isNaN(valA) || valA <= 0) {
-            document.getElementById('handTotal').innerText = "--- g";
-            document.getElementById('handTotalRange').innerText = "--- ~ ---";
-            return;
-        }
+        if (isNaN(valA) || valA <= 0) { document.getElementById('handTotal').innerText = "--- g"; document.getElementById('handTotalRange').innerText = "--- ~ ---"; return; }
         const total = valA * (1 + glueList[hIdx].r);
         document.getElementById('handTotal').innerText = total.toFixed(2) + " g";
         document.getElementById('handTotalRange').innerText = `${(total * 0.99).toFixed(2)} ~ ${(total * 1.01).toFixed(2)}`;
     }
 
-    function resetHand() {
-        document.getElementById('handInputA').value = "";
-        document.getElementById('handTotal').innerText = "--- g";
-        document.getElementById('handTotalRange').innerText = "--- ~ ---";
-    }
+    function resetHand() { document.getElementById('handInputA').value = ""; calcHand(); }
 
     function calcMach() {
         const valA = parseFloat(document.getElementById('machInputA').value);
         const valB = parseFloat(document.getElementById('machInputB').value);
         const machBox = document.getElementById('machBox');
-        const statusText = document.getElementById('machStatus');
-        
         if (!isNaN(valA) && !isNaN(valB) && valA > 0) {
             const ratio = valB / valA;
             document.getElementById('machRatio').innerText = ratio.toFixed(3);
             machBox.classList.remove('status-ok', 'status-warn', 'status-danger');
-            
-            if (ratio < 0.475 || ratio > 0.525) {
-                machBox.classList.add('status-danger');
-                statusText.innerText = "✖ 異常 (偏差過大)";
-            } else if (ratio >= 0.485 && ratio <= 0.515) {
-                machBox.classList.add('status-ok');
-                statusText.innerText = "✔ 合格 (精準度 ±3%)";
-            } else {
-                machBox.classList.add('status-warn');
-                statusText.innerText = "⚠ 示警 (邊緣區間)";
-            }
-        } else {
-            document.getElementById('machRatio').innerText = "---";
-            statusText.innerText = "請輸入數值";
-            machBox.classList.remove('status-ok', 'status-warn', 'status-danger');
-        }
+            if (ratio < 0.475 || ratio > 0.525) { machBox.classList.add('status-danger'); document.getElementById('machStatus').innerText = "✖ 異常"; }
+            else if (ratio >= 0.485 && ratio <= 0.515) { machBox.classList.add('status-ok'); document.getElementById('machStatus').innerText = "✔ 合格"; }
+            else { machBox.classList.add('status-warn'); document.getElementById('machStatus').innerText = "⚠ 示警"; }
+        } else { document.getElementById('machRatio').innerText = "---"; document.getElementById('machStatus').innerText = "請輸入數值"; machBox.classList.remove('status-ok', 'status-warn', 'status-danger'); }
     }
 
-    function resetMach() {
-        document.getElementById('machInputA').value = "";
-        document.getElementById('machInputB').value = "";
-        document.getElementById('machRatio').innerText = "---";
-        document.getElementById('machStatus').innerText = "請輸入數值";
-        document.getElementById('machBox').classList.remove('status-ok', 'status-warn', 'status-danger');
-    }
+    function resetMach() { document.getElementById('machInputA').value = ""; document.getElementById('machInputB').value = ""; calcMach(); }
 </script>
 </body>
 </html>
