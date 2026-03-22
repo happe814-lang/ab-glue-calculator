@@ -286,13 +286,13 @@
             // 判定區間 (標準 0.5)
             if (ratio < 0.475 || ratio > 0.525) { 
                 machBox.classList.add('status-danger'); 
-                document.getElementById('machStatus').innerText = "✖ 異常"; 
+                document.getElementById('machStatus').innerText = "✖ 異常 (>±5% <0.475 或 >0.525)"; 
             } else if (ratio >= 0.485 && ratio <= 0.515) { 
                 machBox.classList.add('status-ok'); 
-                document.getElementById('machStatus').innerText = "✔ 合格"; 
+                document.getElementById('machStatus').innerText = "✔ 合格 (±3% 0.485 ~ 0.515)"; 
             } else { 
                 machBox.classList.add('status-warn'); 
-                document.getElementById('machStatus').innerText = "⚠ 示警"; 
+                document.getElementById('machStatus').innerText = "⚠ 示警 (±3~5% 邊緣區間)"; 
             }
         } else { 
             document.getElementById('machRatio').innerText = "---"; 
