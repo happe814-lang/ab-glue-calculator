@@ -168,7 +168,7 @@
         </div>
         <div id="machBox" class="result-box res-machine">
             <div class="res-label">實測重量比 (B ÷ A)</div>
-            <div style="font-size: 0.75rem; color: #888; margin: 2px 0 5px 0;">0.485~0.515(標準±3%)</div>
+            <div style="font-size: 0.75rem; color: #888; margin: 2px 0 5px 0;">0.480~0.520(標準±4%)</div>
             <div id="machRatio" class="res-value">---</div>
             <div id="machStatus" class="res-range-value">請輸入數值</div>
         </div>
@@ -283,16 +283,16 @@
             document.getElementById('machRatio').innerText = ratio.toFixed(3);
             machBox.classList.remove('status-ok', 'status-warn', 'status-danger');
             
-            // 判定區間 (標準 0.5)
-            if (ratio < 0.485 || ratio > 0.515) { 
+            // 判定區間 (標準 0.4)
+            if (ratio < 0.480 || ratio > 0.520) { 
                 machBox.classList.add('status-danger'); 
-                document.getElementById('machStatus').innerText = "✖ 異常 (>±3% <0.485 或 >0.515)"; 
-            } else if (ratio >= 0.4925 && ratio <= 0.5075) { 
+                document.getElementById('machStatus').innerText = "✖ 異常 (>±4% <0.480 或 >0.520)"; 
+            } else if (ratio >= 0.490 && ratio <= 0.510) { 
                 machBox.classList.add('status-ok'); 
-                document.getElementById('machStatus').innerText = "✔ 合格 (±1.5% 0.4925 ~ 0.5075)"; 
+                document.getElementById('machStatus').innerText = "✔ 合格 (±2% 0.490 ~ 0.510)"; 
             } else { 
                 machBox.classList.add('status-warn'); 
-                document.getElementById('machStatus').innerText = "⚠ 示警 (±1.5~3% 邊緣區間)"; 
+                document.getElementById('machStatus').innerText = "⚠ 示警 (±2~4% 邊緣區間)"; 
             }
         } else { 
             document.getElementById('machRatio').innerText = "---"; 
