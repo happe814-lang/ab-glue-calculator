@@ -258,7 +258,7 @@
         resetHand();
     }
 
-    /* 手調模式核心計算邏輯 */
+   /* 手調模式核心計算邏輯 */
     function calcHand() {
         const valA = parseFloat(document.getElementById('handInputA').value);
         if (isNaN(valA) || valA <= 0) { 
@@ -266,12 +266,22 @@
             document.getElementById('handTotalRange').innerText = "--- ~ ---"; 
             return; 
         }
-        const total = valA * (1 + glueList[hIdx].r); // 總重 = A * (1 + 比例)
+        
+        const ratio = glueList[hIdx].r;
+        const valB = valA * ratio;       // 算出 B劑 標準重量
+        const total = valA + valB;       // 標準總重
+        
+        // 針對 B劑 計算 1% 的公差範圍
+        const minB = valB * 0.99;        
+        const maxB = valB * 1.01;        
+        
+        // 將 A劑 加上 B劑的公差，得到最終總重區間
+        const minTotal = valA + minB;    
+        const maxTotal = valA + maxB;    
+        
         document.getElementById('handTotal').innerText = total.toFixed(2) + " g";
-        document.getElementById('handTotalRange').innerText = `${(total * 0.99).toFixed(2)} ~ ${(total * 1.01).toFixed(2)}`; // 顯示上下 1% 範圍
+        document.getElementById('handTotalRange').innerText = `${minTotal.toFixed(2)} ~ ${maxTotal.toFixed(2)}`; 
     }
-
-    function resetHand() { document.getElementById('handInputA').value = ""; calcHand(); }
 
     /* 打膠機比例校正邏輯與顏色判定 */
     function calcMach() {
